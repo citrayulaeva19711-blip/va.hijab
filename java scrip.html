@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>va.hijab 💖</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Comic Sans MS', cursive;
+    background: linear-gradient(135deg, #ffc0cb, #ffe4ec);
+}
+
+header {
+    text-align: center;
+    padding: 20px;
+    background: #ff4da6;
+    color: white;
+}
+
+.container {
+    display: flex;
+}
+
+.products {
+    width: 70%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+}
+
+.product {
+    background: white;
+    width: 220px;
+    margin: 10px;
+    padding: 15px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+    position: relative;
+}
+
+.badge {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    background: #ff4da6;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+
+.product img {
+    width: 100%;
+    height: 200px;
+    border-radius: 15px;
+    object-fit: cover;
+}
+
+button {
+    background: #ff4da6;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.cart {
+    width: 30%;
+    background: white;
+    padding: 15px;
+    border-left: 2px solid pink;
+}
+
+.remove {
+    background: red;
+}
+
+/* POPUP FORM */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background: white;
+    width: 300px;
+    margin: 100px auto;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+input, textarea {
+    width: 90%;
+    margin: 5px;
+    padding: 8px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>💖 va.hijab 💖</h1>
+    <p>🌸 Cantik • Lucu • Elegan 🌸</p>
+</header>
+
+<div class="container">
+
+<div class="products">
+
+<div class="product">
+    <div class="badge">🔥 Best Seller</div>
+    <img src="bergo.jpg">
+    <h3>Hijab Tancel</h3>
+    <p>Rp 75.000</p>
+    <button onclick="addToCart('Tancel',75000)">🛍️ Tambah</button>
+</div>
+
+<div class="product">
+    <div class="badge">💖 Favorit</div>
+    <img src="viscose.jpg">
+    <h3>Hijab Viscose</h3>
+    <p>Rp 65.000</p>
+    <button onclick="addToCart('Viscose',65000)">🛍️ Tambah</button>
+</div>
+
+<div class="product">
+    <div class="badge">✨ New</div>
+    <img src="voal.jpg">
+    <h3>Hijab Voal</h3>
+    <p>Rp 70.000</p>
+    <button onclick="addToCart('Voal',70000)">🛍️ Tambah</button>
+</div>
+
+</div>
+
+<div class="cart">
+    <h2>🛒 Keranjang</h2>
+    <ul id="cartList"></ul>
+    <h3>Total: Rp <span id="total">0</span></h3>
+    <p>Diskon: <span id="diskon">0</span></p>
+    <h3>Bayar: Rp <span id="bayar">0</span></h3>
+    <button onclick="openForm()">💌 Pesan Sekarang</button>
+</div>
+
+</div>
+
+<!-- FORM POPUP -->
+<div class="modal" id="formModal">
+    <div class="modal-content">
+        <h3>Isi Data 💖</h3>
+        <input type="text" id="nama" placeholder="Nama">
+        <input type="text" id="hp" placeholder="No HP">
+        <textarea id="alamat" placeholder="Alamat"></textarea>
+        <textarea id="catatan" placeholder="Catatan"></textarea>
+        <button onclick="submitOrder()">Kirim</button>
+    </div>
+</div>
+
+<script>
+let cart = [];
+let total = 0;
+
+function addToCart(nama, harga) {
+    cart.push({nama, harga});
+    total += harga;
+    renderCart();
+}
+
+function removeItem(index) {
+    total -= cart[index].harga;
+    cart.splice(index, 1);
+    renderCart();
+}
+
+function renderCart() {
+    let list = document.getElementById("cartList");
+    list.innerHTML = "";
+
+    cart.forEach((item, index) => {
+        list.innerHTML += `
+        <li>
+        💖 ${item.nama} - Rp ${item.harga}
+        <button class="remove" onclick="removeItem(${index})">❌</button>
+        </li>`;
+    });
+
+    let diskon = total > 100000 ? total * 0.1 : 0;
+    let bayar = total - diskon;
+
+    document.getElementById("total").innerText = total;
+    document.getElementById("diskon").innerText = diskon;
+    document.getElementById("bayar").innerText = bayar;
+}
+
+function openForm() {
+    if (cart.length === 0) {
+        alert("Keranjang kosong 😢");
+        return;
+    }
+    document.getElementById("formModal").style.display = "block";
+}
+
+function submitOrder() {
+    let nama = document.getElementById("nama").value;
+    let hp = document.getElementById("hp").value;
+
+    if (nama === "" || hp === "") {
+        alert("Isi data dulu!");
+        return;
+    }
+
+    alert("Pesanan berhasil dikirim 💖");
+    document.getElementById("formModal").style.display = "none";
+}
+</script>
+
+</body>
+</html>
